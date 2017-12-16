@@ -1,36 +1,54 @@
 package TraceService;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TraceService
 {
-    //private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    private TraceFiles m_TraceFiles;
 
-    @RequestMapping("/traceFiles")
-    public TraceFiles doTraceFilesRequest()
+    public TraceService()
     {
-        //return l_TraceFiles.GetAsDelimitedString(",");
-        return new TraceFiles();
+        m_TraceFiles = new TraceFiles();
     }
 
-    //@RequestMapping (value = "/traceFile/{id}", method = RequestMethod.GET, produces="text/xml")
-    @RequestMapping ("/traceFile/{id}")
+    @GetMapping("/traceFiles")
+    public TraceFiles doTraceFilesRequest()
+    {
+        m_TraceFiles.loadFiles();
+        return m_TraceFiles;
+    }
+
+    //value = "/traceFile/{id}", method = RequestMethod.GET, produces="text/xml"
+    @GetMapping("/traceFile/{id}")
     public String doTraceFileRequest(@PathVariable("id") String p_Id)
     {
         try
         {
-            return new TraceFiles().getTraceFile(p_Id);
+            return m_TraceFiles.getTraceFile(p_Id);
         }
         catch(IOException e)
         {
             return e.getMessage();
         }
+    }
+
+    //@PostMapping(path = "/members", consumes = "application/json", produces = "application/json")
+    @PostMapping("/newTracePath/")
+    public TraceFiles doNewTracePathRequest(@RequestBody String p_Data)
+    {
+        m_TraceFiles.setPath(p_Data);
+        m_TraceFiles.loadFiles();
+
+        return m_TraceFiles;
+    }
+
+    @PostMapping("/deleteTraceFiles/")
+    public TraceFiles doNewTracePathRequest(@RequestBody Integer p_Data)
+    {
+        m_TraceFiles.deleteTraceFiles(p_Data);
+
+        return m_TraceFiles;
     }
 }

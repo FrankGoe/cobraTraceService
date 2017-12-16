@@ -15,8 +15,10 @@ public class TraceFiles
     private ArrayList<TraceFile> m_Items;
     private String m_Path = "C:\\DevelopWeb\\cobraTraceAnalyze\\examples\\";
 
-    public void LoadFiles()
+    public void loadFiles()
     {
+        m_Items.clear();
+
         File[] l_Files = new File(m_Path).listFiles();
 
         if (l_Files == null)
@@ -33,6 +35,36 @@ public class TraceFiles
         }
     }
 
+    public void deleteTraceFiles(Integer daysDeleteOffset)
+    {
+        loadFiles();
+
+        Date l_Today = new Date();
+        Calendar l_Calendar = Calendar.getInstance();
+        l_Calendar.setTime(l_Today);
+        l_Calendar.add(Calendar.DAY_OF_MONTH, daysDeleteOffset * -1);
+        Date l_DeleteDate = l_Calendar.getTime();
+
+
+        for (int i = m_Items.size() - 1; i >= 0; i--)
+        {
+            TraceFile l_TraceFile = m_Items.get(i);
+
+            if (l_TraceFile.LastModifiedDate().before(l_DeleteDate))
+            {
+                try
+                {
+                    Files.deleteIfExists(Paths.get(m_Path + l_TraceFile.getName()));
+                    m_Items.remove(l_TraceFile);
+                }
+                catch (IOException x)
+                {
+                    System.err.println(x);
+                }
+            }
+        }
+
+    }
 
     public String getTraceFile(String p_FileName) throws IOException
     {
@@ -50,11 +82,18 @@ public class TraceFiles
     {
         return m_Path;
     }
+    public void setPath(String p_Path)
+    {
+        if (!p_Path.endsWith("\\"))
+            p_Path = p_Path + "\\";
+
+        m_Path = p_Path;
+    }
 
     public List<TraceFile> getItems()
     {
         //return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModifed).reversed()).collect(Collectors.toList());
-        return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModifed)).collect(Collectors.toList());
+        return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModified)).collect(Collectors.toList());
     }
 
     public String GetAsDelimitedString(String p_Delimiter)
@@ -65,7 +104,6 @@ public class TraceFiles
     public TraceFiles()
     {
         m_Items = new ArrayList<TraceFile>();
-        LoadFiles();
     }
 
     private class TraceFile {
@@ -81,12 +119,17 @@ public class TraceFiles
             m_Size = p_Size;
         }
 
-        public String getLastModifed()
+        public String getLastModified()
         {
             Date l_LastModifed = new Date(m_LastModifed);
             Format l_Formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             return l_Formatter.format(l_LastModifed);
+        }
+
+        public Date LastModifiedDate()
+        {
+            return new Date(m_LastModifed);
         }
 
         public String getTotalSpaceMb()
