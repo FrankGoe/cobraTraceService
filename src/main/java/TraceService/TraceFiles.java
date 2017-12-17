@@ -66,22 +66,29 @@ public class TraceFiles
 
     }
 
-    public String getTraceFile(String p_FileName) throws IOException
+    public String getTraceFile(String p_FileName)
     {
         p_FileName += ".txt";
 
         Path l_Path = Paths.get(m_Path + p_FileName);
-
         if (!Files.exists(l_Path))
             return "Datei " + p_FileName + " ist nicht vorhanden.";
 
-         return new String(Files.readAllBytes(l_Path));
+        try
+        {
+            return new String(Files.readAllBytes(l_Path));
+        }
+        catch(IOException e)
+        {
+            return e.getMessage();
+        }
     }
 
     public String getPath()
     {
         return m_Path;
     }
+
     public void setPath(String p_Path)
     {
         if (!p_Path.endsWith("\\"))

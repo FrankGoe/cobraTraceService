@@ -24,14 +24,7 @@ public class TraceService
     @GetMapping("/traceFile/{id}")
     public String doTraceFileRequest(@PathVariable("id") String p_Id)
     {
-        try
-        {
-            return m_TraceFiles.getTraceFile(p_Id);
-        }
-        catch(IOException e)
-        {
-            return e.getMessage();
-        }
+        return m_TraceFiles.getTraceFile(p_Id);
     }
 
     //@PostMapping(path = "/members", consumes = "application/json", produces = "application/json")

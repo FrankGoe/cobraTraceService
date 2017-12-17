@@ -1,0 +1,135 @@
+h1 
+{	
+	padding-top: 3px;
+}
+
+img 
+{
+	float: left;
+}
+
+input[type="number"] 
+{
+  width: 4em;
+}
+
+#cobraIcon 
+{
+	 padding-right: 20px;
+	 width: 42px;
+	 height: 42px;
+	 float: top;
+}
+#chart
+{
+	width: 1400px;
+	height: 700px;			
+}
+#grid
+{
+	width:1400px;
+	height: 800px;	
+}
+
+.clear
+{
+	clear: both;	
+}
+
+.sql
+{
+	width: 1400px;
+	overflow-x: hidden;	
+	white-space: pre-wrap;
+}
+
+.header 
+{
+	float: top;
+	height: 6%
+}
+
+.client
+{	
+	width: 1800px; 
+	height: 900px;
+	border-color:  rgba(191, 191, 191, 0.15);
+	border-top-style: solid;
+	border-width: 2px;	
+}
+
+.controls
+{
+	float: left;
+}
+
+.options {	
+	float: left;	
+	padding: 20px;
+	height: 840px;
+	width: 320px;
+	background-color: rgba(191, 191, 191, 0.15);
+}
+
+.option {
+	margin-top: 10;
+	padding: 3px;
+}
+
+.caption {
+	font-size: 18px;
+	font-weight: 500;
+	margin-bottom: 10;	
+}
+
+.option > span {
+	margin-right: 10px;
+}
+
+.option > .dx-widget {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.tooltip-header {
+	margin-bottom: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #c5c5c5;
+}
+
+.tooltip-body {
+	width: 170px;
+}
+
+.tooltip-body .series-name {
+	font-weight: normal;
+	opacity: 0.6;
+	display: inline-block;
+	line-height: 1.5;
+	padding-right: 10px;
+	width: 126px;
+}
+
+.tooltip-body .value-text {
+	display: inline-block;
+	line-height: 1.5;
+	width: 30px;
+}
+.dx-dropdowneditor-overlay .dx-overlay-content {
+	min-width: 420px;
+  }
+
+div[dx-button]
+{
+	margin-top: 3px;
+}
+
+#btnConfirmOptions
+{
+	position: absolute;
+    bottom: 10%;
+	margin: 0px;
+}
+  
