@@ -99,8 +99,8 @@ public class TraceFiles
 
     public List<TraceFile> getItems()
     {
-        //return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModifed).reversed()).collect(Collectors.toList());
-        return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModified)).collect(Collectors.toList());
+        return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModified).reversed()).collect(Collectors.toList());
+        //return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModified)).collect(Collectors.toList());
     }
 
     public String GetAsDelimitedString(String p_Delimiter)
