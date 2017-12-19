@@ -1,6 +1,6 @@
-l_App = angular.module('TrApp');
+l_App = angular.module('Trace');
 
-l_App.factory('TrAnalyze', function(TrOptions, TrStatistics, TrFilterType) 
+l_App.factory('Analysis', function(Selections, Statistics, FilterType) 
 {
 	function StrIsNumber(p_String) 
 	{
@@ -10,17 +10,17 @@ l_App.factory('TrAnalyze', function(TrOptions, TrStatistics, TrFilterType)
 
 	function Reset()
 	{
-		TrOptions.SelectedIndex = -1;
-		TrStatistics.Filtered.Count = 0;
-		TrStatistics.Filtered.AvgTraceTime = 0;
-		TrStatistics.Filtered.SumTraceTime = 0;
-		TrStatistics.Filtered.SumWaitingTime = 0;		
+		Selections.SelectedIndex = -1;
+		Statistics.Filtered.Count = 0;
+		Statistics.Filtered.AvgTraceTime = 0;
+		Statistics.Filtered.SumTraceTime = 0;
+		Statistics.Filtered.SumWaitingTime = 0;		
 		
-		TrStatistics.Total.Count = 0;
-		TrStatistics.Total.SumTraceTime = 0;
-		TrStatistics.Total.AvgTraceTime = 0;	
-		TrStatistics.Total.SumWaitingTime = 0;		
-		TrStatistics.Total.SumTimestampTime = 0;		
+		Statistics.Total.Count = 0;
+		Statistics.Total.SumTraceTime = 0;
+		Statistics.Total.AvgTraceTime = 0;	
+		Statistics.Total.SumWaitingTime = 0;		
+		Statistics.Total.SumTimestampTime = 0;		
 	}	
 		
 	function GetTimeStampAsString(p_Timestamp)
@@ -140,19 +140,19 @@ l_App.factory('TrAnalyze', function(TrOptions, TrStatistics, TrFilterType)
 			
 			 l_Item.Id = l_FilteredResult.length + 1, 
 			
-			TrStatistics.Total.Count++;
-			TrStatistics.Total.SumTraceTime = TrStatistics.Total.SumTraceTime + l_Item.SqlTime;			
-			TrStatistics.Total.SumWaitingTime = TrStatistics.Total.SumWaitingTime + l_Item.WaitingTime;			
+			Statistics.Total.Count++;
+			Statistics.Total.SumTraceTime = Statistics.Total.SumTraceTime + l_Item.SqlTime;			
+			Statistics.Total.SumWaitingTime = Statistics.Total.SumWaitingTime + l_Item.WaitingTime;			
 			
 			if 	(
-					(TrOptions.currentFilter.Id == TrFilterType[1].Id && (l_Item.SqlTime > TrOptions.FilterTime)) || 
-					(TrOptions.currentFilter.Id == TrFilterType[2].Id && (l_Item.WaitingTime > TrOptions.FilterTime)) ||
-					(TrOptions.currentFilter.Id == TrFilterType[0].Id)
+					(Selections.FilterType.Id == FilterType[1].Id && (l_Item.SqlTime > Selections.FilterTime)) || 
+					(Selections.FilterType.Id == FilterType[2].Id && (l_Item.WaitingTime > Selections.FilterTime)) ||
+					(Selections.FilterType.Id == FilterType[0].Id)
 				)		   
 			{				
-				TrStatistics.Filtered.Count++;
-				TrStatistics.Filtered.SumTraceTime = TrStatistics.Filtered.SumTraceTime + l_Item.SqlTime;
-				TrStatistics.Filtered.SumWaitingTime = TrStatistics.Filtered.SumWaitingTime + l_Item.WaitingTime;				
+				Statistics.Filtered.Count++;
+				Statistics.Filtered.SumTraceTime = Statistics.Filtered.SumTraceTime + l_Item.SqlTime;
+				Statistics.Filtered.SumWaitingTime = Statistics.Filtered.SumWaitingTime + l_Item.WaitingTime;				
 				
 				//LineItem zu Ergebnisarray hinzufügen
 				l_FilteredResult.push(l_Item);									
@@ -241,7 +241,8 @@ l_App.factory('TrAnalyze', function(TrOptions, TrStatistics, TrFilterType)
 				  };
 		},
 	
-		AnalyzeTrace: function() {
+		AnalyzeTrace: function() 
+		{
 			var l_Rows = this.TraceFile.split("\n");
 			var l_ResultArr = [];		
 			var l_ReadSQL= false;
@@ -345,11 +346,11 @@ l_App.factory('TrAnalyze', function(TrOptions, TrStatistics, TrFilterType)
 			
 			this.TraceRows = FilterResult(l_ResultArr);
 			
-			TrStatistics.Filtered.AvgTraceTime = TrStatistics.Filtered.SumTraceTime / TrStatistics.Filtered.Count;
-			TrStatistics.Total.AvgTraceTime = TrStatistics.Total.SumTraceTime / TrStatistics.Total.Count;		
+			Statistics.Filtered.AvgTraceTime = Statistics.Filtered.SumTraceTime / Statistics.Filtered.Count;
+			Statistics.Total.AvgTraceTime = Statistics.Total.SumTraceTime / Statistics.Total.Count;		
 
 			if (this.HasTimestamps)
-				TrStatistics.Total.SumTimestampTime = ((l_LastTimestamp - l_FirstTimestamp) / 1000);
+				Statistics.Total.SumTimestampTime = ((l_LastTimestamp - l_FirstTimestamp) / 1000);
 		},
 		
 		RowsAsTable: function() 
