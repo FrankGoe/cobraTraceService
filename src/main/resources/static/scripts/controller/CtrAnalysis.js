@@ -1,19 +1,19 @@
 l_App = angular.module('Trace');
 
-l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, Statistics, Selections, VisibleControlType, SeriesTypes) 
+l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, Statistics, Selections, ControlType, SeriesType) 
 {      	
 	// Variablen
 	$scope.Selections = Selections;
-	$scope.VisibleControlType = VisibleControlType;		
+	$scope.ControlType = ControlType;		
 	$scope.Analysis = Analysis;		
 	$scope.Statistics = Statistics;
-	$scope.Selections.VisibleControl = VisibleControlType.Empty;
+	$scope.Selections.ControlType = ControlType.Empty;
 		
 	// Events
-	$scope.$watch('Selections.SeriesType.Id', DoInitComponent); 
 	$scope.$watch('Analysis.TraceRows', DoInitComponent);
+	$scope.$watch('Selections.SeriesType.Id', DoInitComponent); 
 	$scope.$watch('Selections.SelectedRow', DoInitComponent);
-	$scope.$watch('Selections.VisibleControl', DoInitComponent); 
+	$scope.$watch('Selections.ControlType', DoInitComponent); 
 	
 	InitTab();
 	InitChart();
@@ -24,12 +24,12 @@ l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, 
 
 	function DoInitComponent()
 	{	
-		if (Selections.VisibleControl == VisibleControlType.Chart)
+		if (Selections.ControlType == ControlType.Chart)
 		{
-			if ($scope.Selections.SeriesType.Id  == SeriesTypes[0])
+			if ($scope.Selections.SeriesType.Id  == SeriesType[0])
 			$scope.currentSeries = [{ valueField: 'SqlTime' , name: "Laufzeit"}];
 		
-			else if  ($scope.Selections.SeriesType.Id  == SeriesTypes[1])
+			else if  ($scope.Selections.SeriesType.Id  == SeriesType[1])
 				$scope.currentSeries = [{ valueField: 'WaitingTime', name: "Wartezeit"}];
 			else
 				$scope.currentSeries = [{ valueField: 'SqlTime' , name: "Laufzeit"}, { valueField: 'WaitingTime', name: "Wartezeit" }];
@@ -37,13 +37,13 @@ l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, 
 			$scope.chartData = Analysis.TraceRows;	
 		}
 						
-		if (Selections.VisibleControl == VisibleControlType.Result)
+		if (Selections.ControlType == ControlType.Result)
 		{		
 			$scope.gridData = Analysis.TraceRows;			
 			DoSelectGridRow($scope.gridApi, $scope.Selections.SelectedRow);
 		}	
 		
-		if (Selections.VisibleControl == VisibleControlType.CellData)
+		if (Selections.ControlType == ControlType.CellData)
 		{
 			if (Selections.SelectedRow != undefined)
 			{
@@ -191,7 +191,7 @@ l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, 
 				component.clickKey = 0;
 				component.clickDate = null;
 	
-				$scope.Selections.VisibleControl = VisibleControlType.CellData;
+				$scope.Selections.ControlType = ControlType.CellData;
 			}
 	
 			if ((!component.clickCount) || (component.clickCount != 1) || (component.clickKey != p_Cell.key) ) 
@@ -257,7 +257,7 @@ l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, 
 							{ text: "Datensatz"}
 							],
 							bindingOptions: {
-								selectedIndex: 'Selections.VisibleControl'
+								selectedIndex: 'Selections.ControlType'
 							},
 							width: 300,
 							height: 20,
@@ -320,7 +320,7 @@ l_App.controller('CtrAnalysis', function($scope, $timeout, $q, $http, Analysis, 
 				   $scope.Selections.SelectedRow = Analysis.TraceRows[info.target.index];	
 				   info.target.hideTooltip();
    
-				   $scope.Selections.VisibleControl = VisibleControlType.Result;				
+				   $scope.Selections.ControlType = ControlType.Result;				
 			   }
 		   }		
 	   }	   

@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.*;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-public class SpringApp
+public class TraceApp
 {
     public static void main(String[] args)
     {
-        SpringApplication.run(SpringApp.class, args);
+        SpringApplication.run(TraceApp.class, args);
     }
 }

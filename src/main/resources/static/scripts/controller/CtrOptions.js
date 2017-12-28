@@ -1,13 +1,13 @@
 l_App = angular.module('Trace');
 
-l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, Selections, Statistics, FilterType, VisibleControlType, LineTypes, SeriesTypes) 
+l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, Selections, Statistics, FilterType, ControlType, LineType, SeriesType) 
 {  
 	$scope.Selections = Selections;
-	$scope.VisibleControlType = VisibleControlType;		
+	$scope.ControlType = ControlType;		
 	$scope.Analysis = Analysis;		
 	$scope.FilterType = FilterType;	
-	$scope.LineTypes = LineTypes;		
-	$scope.SeriesTypes = SeriesTypes;			
+	$scope.LineType = LineType;		
+	$scope.SeriesType = SeriesType;			
 	$scope.Statistics = Statistics;
 
 	$scope.traceServiceActive = false;		
@@ -21,11 +21,11 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 	$scope.$watch('Selections.FilterTime', doOnFilterChanged); 			
 
 
-	$scope.cboLineTypeOptions = {dataSource: LineTypes,  
+	$scope.cboLineTypeOptions = {dataSource: LineType,  
 			bindingOptions: { value: "Selections.LineType.Id"} 
 			};
 
-	$scope.cboSeriesTypeOptions = {dataSource: SeriesTypes,  
+	$scope.cboSeriesTypeOptions = {dataSource: SeriesType,  
 			  bindingOptions: { value: "Selections.SeriesType.Id"} 
 			};		
 
@@ -80,7 +80,7 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 	
 	function doAnalyzeFinished(p_Result) 
 	{
-		Selections.VisibleControl = VisibleControlType.Chart;	
+		Selections.ControlType = ControlType.Chart;	
 		$scope.isLoadPanelVisible = false;		
 		$scope.traceLoading = false;
 	};

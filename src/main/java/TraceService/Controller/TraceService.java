@@ -1,7 +1,8 @@
-package TraceService;
+package TraceService.Controller;
 
+import TraceService.Business.TraceFiles;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -12,9 +13,9 @@ public class TraceService
     private void ínitResponseHeader(HttpServletResponse p_Response)
     {
         p_Response.setHeader("Access-Control-Allow-Origin", "*");
-        p_Response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+        p_Response.setHeader("Access-Control-Allow-Methods", "*");
         p_Response.setHeader("Access-Control-Max-Age", "3600");
-        p_Response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        p_Response.setHeader("Access-Control-Allow-Headers", "*");
     }
 
     public TraceService()

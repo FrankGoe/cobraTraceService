@@ -51,7 +51,7 @@
 				<div ng-show="traceServiceActive" dx-select-box="cboTraceFilesOptions"></div> 
 				<div ng-show="traceServiceActive" dx-button="btnReloadFilesOptions"></div> 
 				<div ng-show="traceServiceActive" dx-button="btnTraceOptions"></div>
-				<input ng-show="!traceServiceActive" name="file" type="file" class="inputfile" onchange="angular.element(this).scope().onFileNameChanged(this)">		
+				<input ng-show="!traceServiceActive" name="file" type="file" class="inputfile" onchange="angular.element(this).scope().onFileNameChanged(this)">
 				<div dx-popup="popPathOptions">
 					<div class="option"> <span>Ordner:&nbsp;</span> <div dx-text-box="txtPathOptions"></div></div>
 					<div class="option"> <span>Dateien die älter als&nbsp;</span> <div dx-text-box="txtDaysDeleteOffsetOptions"></div> <span>&nbsp; Tage sind löschen:&nbsp;&nbsp;</span> <div dx-check-box="chkDeleteFilesOptions"></div> </div> <br>
@@ -65,21 +65,21 @@
 			</div>		
 			<div class="option" ng-show="Selections.FilterType.Id!=FilterType[0].Id"> länger als <input type="number" step=0.01 ng-model="Selections.FilterTime"> Sekunden </div>			
 			<br>				
-			<div class="caption" ng-show="Selections.VisibleControl==VisibleControlType.Chart">Chart</div>				
-			<div class="option" ng-show="Selections.VisibleControl==VisibleControlType.Chart">              
+			<div class="caption" ng-show="Selections.ControlType==ControlType.Chart">Chart</div>				
+			<div class="option" ng-show="Selections.ControlType==ControlType.Chart">              
 				<span>Linientyp</span>
 				<div dx-select-box="cboLineTypeOptions"></div>
 			</div>
-			<div class="option" ng-show="Selections.VisibleControl==VisibleControlType.Chart">              
+			<div class="option" ng-show="Selections.ControlType==ControlType.Chart">              
 				<span>Kennzahl</span>
 				<div dx-select-box="cboSeriesTypeOptions"></div>
 			</div>								
 		</div>		
 		<div class="controls" ng-controller="CtrAnalysis">	
-			<div ng-show="Selections.VisibleControl!=VisibleControlType.Empty" dx-tabs="tabSettings"></div>				
-			<div ng-show="Selections.VisibleControl==VisibleControlType.Chart" id="chart" dx-chart="chartSettings"></div>					
-			<div ng-show="Selections.VisibleControl==VisibleControlType.Result" id="grid" dx-data-grid="gridSettings"></div>					
-			<div ng-show="Selections.VisibleControl==VisibleControlType.CellData">
+			<div ng-show="Selections.ControlType!=ControlType.Empty" dx-tabs="tabSettings"></div>				
+			<div ng-show="Selections.ControlType==ControlType.Chart" id="chart" dx-chart="chartSettings"></div>					
+			<div ng-show="Selections.ControlType==ControlType.Result" id="grid" dx-data-grid="gridSettings"></div>					
+			<div ng-show="Selections.ControlType==ControlType.CellData">
 				<div dx-form="frmTraceItem" id="form"></div><br>				
 				<pre><code name="SqlText" class="sql"></code></pre>								
 			</div>	
