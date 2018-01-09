@@ -4,13 +4,24 @@
     // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+        {
+            "type": "java",
+            "name": "Debug WebService",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "TraceService.TraceApp",
+            "args": ""
+        },
         {
             "type": "chrome",
             "request": "launch",
             "name": "Debug WebClient",
             "url": "http://localhost:8080",
             "webRoot": "${workspaceRoot}",
-            "file": "${workspaceRoot}/index.html"
+            "file": "${workspaceRoot}/src/main/resources/static/index.html"
         }
     ]
 }
