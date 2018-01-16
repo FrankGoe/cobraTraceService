@@ -1,26 +1,29 @@
 package TraceService.Controller;
 
-import TraceService.Business.TraceFiles;
-import org.springframework.ui.ModelMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import TraceService.Business.TraceManager;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class TraceService
 {
-    private TraceFiles m_TraceFiles;
+    private TraceManager traceManager;
 
     public TraceService()
     {
-        m_TraceFiles = new TraceFiles();
+        traceManager = new TraceManager();
+        traceManager.configs.load();
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/traceFiles")
-    public TraceFiles doTraceFilesRequest(HttpServletResponse p_Response)
+    public TraceManager doTraceFilesRequest(HttpServletResponse p_Response)
     {
-        m_TraceFiles.loadFiles();
-        return m_TraceFiles;
+        traceManager.loadFiles();
+        return traceManager;
     }
 
     //value = "/traceFile/{id}", method = RequestMethod.GET, produces="text/xml"
@@ -28,26 +31,31 @@ public class TraceService
     @GetMapping("/traceFile/{id}")
     public String doTraceFileRequest(@PathVariable("id") String p_Id, HttpServletResponse p_Response)
     {
-        return m_TraceFiles.getTraceFile(p_Id);
+        return traceManager.getTraceFile(p_Id);
     }
 
     //@PostMapping(path = "/members", consumes = "application/json", produces = "application/json")
     @CrossOrigin(origins = "*")    
     @PostMapping("/newTracePath/")
-    public TraceFiles doNewTracePathRequest(@RequestBody String p_Data, HttpServletResponse p_Response)
+    public TraceManager doNewTracePathRequest(@RequestBody String p_Data, HttpServletResponse p_Response)
     {
-        m_TraceFiles.setPath(p_Data);
-        m_TraceFiles.loadFiles();
+        traceManager.userConfig("frank").setPath(p_Data);
+        traceManager.configs.save();
 
-        return m_TraceFiles;
+        traceManager.loadFiles();
+
+        return traceManager;
     }
   
     @CrossOrigin(origins = "*")
     @PostMapping("/deleteTraceFiles/")
-    public TraceFiles doNewTracePathRequest(@RequestBody Integer p_Data, HttpServletResponse p_Response)
+    public TraceManager doNewTracePathRequest(@RequestBody Integer p_Data, HttpServletResponse p_Response)
     {
-        m_TraceFiles.deleteTraceFiles(p_Data);
+        traceManager.userConfig("frank").daysDeleteOffset = p_Data;
+        traceManager.configs.save();
 
-        return m_TraceFiles;
+        traceManager.deleteTraceFiles(p_Data);
+
+        return traceManager;
     }
 }

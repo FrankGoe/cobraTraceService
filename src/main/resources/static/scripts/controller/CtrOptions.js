@@ -51,7 +51,7 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 			$scope.traceFiles = p_Response.data;	  
 			$scope.tracePath = p_Response.data.path;
 			$scope.items = p_Response.data.items;  				
-			$scope.daysDeleteOffset = 8;
+			$scope.daysDeleteOffset = p_Response.data.daysDeleteOffset;
 			$scope.deleteTrace = false;		  
 			$scope.folderPopupVisible = false;               
 			$scope.cboFileItems = _.map(p_Response.data.items, "name");
@@ -209,7 +209,7 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 		if ($scope.deleteTrace)
 		{				
 			var l_Url = "http://localhost:8080/deleteTraceFiles/";      
-			$http.post(l_Url, daysDeleteOffset).then(pathChangedSuccess);				
+			$http.post(l_Url, $scope.daysDeleteOffset).then(pathChangedSuccess);				
 		}
 
 		function changeTracePath()
