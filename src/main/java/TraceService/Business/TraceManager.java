@@ -12,16 +12,19 @@ import java.util.stream.Collectors;
 
 public class TraceManager {
 
-    public ArrayList<TraceFile> traceFiles;
-    public TraceConfig configs;
+    public String userId;
+    private ArrayList<TraceFile> traceFiles;
+    private TraceConfig configs;
 
     public TraceManager()
     {
         configs = new TraceConfig();
+        configs.load();
+
         traceFiles = new ArrayList<TraceFile>();
     }
 
-    public TraceUserConfig userConfig(String userId)
+    public TraceUserConfig userConfig()
     {
         return configs.userConfig(userId);
     }
@@ -30,7 +33,7 @@ public class TraceManager {
     {
         traceFiles.clear();
 
-        File[] l_Files = new File(configs.userConfig("frank").getPath()).listFiles();
+        File[] l_Files = new File(configs.userConfig(userId).getPath()).listFiles();
 
         if (l_Files == null)
             return;
@@ -74,16 +77,15 @@ public class TraceManager {
                 }
             }
         }
-
     }
 
-    public String getTraceFile(String p_FileName)
+    public String getTraceFile(String fileName)
     {
-        p_FileName += ".txt";
+        fileName += ".txt";
 
-        Path l_Path = Paths.get(configs.userConfig("frank").getPath() + p_FileName);
+        Path l_Path = Paths.get(configs.userConfig(userId).getPath() + fileName);
         if (!Files.exists(l_Path))
-            return "Datei " + p_FileName + " ist nicht vorhanden.";
+            return "Datei " + fileName + " ist nicht vorhanden.";
 
         try
         {
@@ -95,25 +97,35 @@ public class TraceManager {
         }
     }
 
+    public void setPath(String path)
+    {
+        configs.userConfig(userId).setPath(path);
+        configs.save();
+    }
+
     public String getPath()
     {
-        return configs.userConfig("frank").getPath();
+        return configs.userConfig(userId).getPath();
+    }
+
+    public void setDaysDeleteOffset(int daysDeleteOffset)
+    {
+        configs.userConfig(userId).daysDeleteOffset = daysDeleteOffset;
+        configs.save();
     }
 
     public int getdaysDeleteOffset()
     {
-        return configs.userConfig("frank").daysDeleteOffset;
+        return configs.userConfig(userId).daysDeleteOffset;
     }
 
-
-    public List<TraceFile> getItems()
+    public List<TraceFile> getTraceFiles()
     {
-        return traceFiles.stream().sorted(Comparator.comparing(TraceFile::getLastModified).reversed()).collect(Collectors.toList());
-        //return m_Items.stream().sorted(Comparator.comparing(TraceFile::getLastModified)).collect(Collectors.toList());
+        return traceFiles.stream().sorted(Comparator.comparing(TraceFile::getLastModified)).collect(Collectors.toList());
     }
 
     public String GetAsDelimitedString(String p_Delimiter)
     {
-        return traceFiles.stream().map(x -> configs.userConfig("frank").getPath() + x).collect(Collectors.joining("\n"));
+        return traceFiles.stream().map(x -> configs.userConfig(userId).getPath() + x).collect(Collectors.joining("\n"));
     }
 }

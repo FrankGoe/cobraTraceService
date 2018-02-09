@@ -21,7 +21,7 @@ public class TraceFile {
     public String getLastModified()
     {
         Date l_LastModifed = new Date(m_LastModifed);
-        Format l_Formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Format l_Formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         return l_Formatter.format(l_LastModifed);
     }

@@ -48,13 +48,12 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 		function doTraceFilesSuccess(p_Response)
 		{
 			$scope.traceServiceActive = true;		
-			$scope.traceFiles = p_Response.data;	  
+			$scope.traceFiles = p_Response.data.traceFiles;
 			$scope.tracePath = p_Response.data.path;
-			$scope.items = p_Response.data.items;  				
 			$scope.daysDeleteOffset = p_Response.data.daysDeleteOffset;
 			$scope.deleteTrace = false;		  
 			$scope.folderPopupVisible = false;               
-			$scope.cboFileItems = _.map(p_Response.data.items, "name");
+			$scope.cboFileItems = _.map(p_Response.data.traceFiles, "name");
 		}
 	
 		function doTraceFilesFailed(p_Response)
@@ -122,7 +121,7 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 					onValueChanged: doOnSelectBoxChanged,
 					itemTemplate: function (p_TraceName) 
 					{
-						var l_TraceFile = _.filter($scope.items, { 'name': p_TraceName });
+						var l_TraceFile = _.filter($scope.traceFiles, { 'name': p_TraceName });
 						return "<div class='custom-item' title='" + p_TraceName + "'>" + p_TraceName + " | " + l_TraceFile[0].lastModified + " | " + l_TraceFile[0].totalSpaceMb + "</div>";
 					}		
 		}
@@ -223,10 +222,10 @@ l_App.controller('CtrOptions', function($scope, $http, $q, $timeout, Analysis, S
 
 		function pathChangedSuccess(p_Response)
 		{
-			$scope.traceFiles = p_Response.data;	  
+			$scope.traceFiles = p_Response.data.traceFiles;
 			$scope.tracePath = p_Response.data.path;
   
-			$scope.cboFileItems = _.map(p_Response.data.items, function (p_TraceFile) 
+			$scope.cboFileItems = _.map(p_Response.data.traceFiles, function (p_TraceFile)
 			{
 			  return p_TraceFile.name;
 			});	  

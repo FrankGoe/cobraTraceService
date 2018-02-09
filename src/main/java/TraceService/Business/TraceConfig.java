@@ -19,15 +19,15 @@ public class TraceConfig {
         userConfigs = new ArrayList<TraceUserConfig>();
     }
 
-    public TraceUserConfig userConfig(String p_UserId)
+    public TraceUserConfig userConfig(String userId)
     {
         for (TraceUserConfig userConfig : userConfigs)
         {
-            if (userConfig.UserId.equals(p_UserId))
+            if (userConfig.UserId.equals(userId))
                 return userConfig;
         }
 
-        TraceUserConfig userConfig = new TraceUserConfig(p_UserId);
+        TraceUserConfig userConfig = new TraceUserConfig(userId);
         userConfigs.add(userConfig);
 
         return userConfig;
