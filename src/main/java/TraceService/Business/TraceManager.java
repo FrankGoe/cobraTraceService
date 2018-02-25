@@ -1,8 +1,5 @@
 package TraceService.Business;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,29 +8,25 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TraceManager {
-
     public String userId;
     private ArrayList<TraceFile> traceFiles;
-    private TraceConfig configs;
+    private TraceConfig traceConfig;
 
-    public TraceManager()
-    {
-        configs = new TraceConfig();
-        configs.load();
-
+    public TraceManager(TraceConfig traceConfig) {
         traceFiles = new ArrayList<TraceFile>();
+
+        this.traceConfig = traceConfig;
+        this.traceConfig.load();
     }
 
-    public TraceUserConfig userConfig()
-    {
-        return configs.userConfig(userId);
+    public TraceUserConfig userConfig() {
+        return traceConfig.userConfig(userId);
     }
 
-    public void loadFiles()
-    {
+    public void loadFiles() {
         traceFiles.clear();
 
-        File[] l_Files = new File(configs.userConfig(userId).getPath()).listFiles();
+        File[] l_Files = new File(traceConfig.userConfig(userId).getPath()).listFiles();
 
         if (l_Files == null)
             return;
@@ -49,8 +42,7 @@ public class TraceManager {
         }
     }
 
-    public void deleteTraceFiles(Integer daysDeleteOffset)
-    {
+    public void deleteTraceFiles(Integer daysDeleteOffset) {
         loadFiles();
 
         Date l_Today = new Date();
@@ -68,7 +60,7 @@ public class TraceManager {
             {
                 try
                 {
-                    Files.deleteIfExists(Paths.get(configs.userConfig("frank").getPath() + l_TraceFile.getName()));
+                    Files.deleteIfExists(Paths.get(traceConfig.userConfig("frank").getPath() + l_TraceFile.getName()));
                     traceFiles.remove(l_TraceFile);
                 }
                 catch (IOException x)
@@ -79,11 +71,10 @@ public class TraceManager {
         }
     }
 
-    public String getTraceFile(String fileName)
-    {
+    public String getTraceFile(String fileName) {
         fileName += ".txt";
 
-        Path l_Path = Paths.get(configs.userConfig(userId).getPath() + fileName);
+        Path l_Path = Paths.get(traceConfig.userConfig(userId).getPath() + fileName);
         if (!Files.exists(l_Path))
             return "Datei " + fileName + " ist nicht vorhanden.";
 
@@ -97,35 +88,29 @@ public class TraceManager {
         }
     }
 
-    public void setPath(String path)
-    {
-        configs.userConfig(userId).setPath(path);
-        configs.save();
+    public void setPath(String path) {
+        traceConfig.userConfig(userId).setPath(path);
+        traceConfig.save();
     }
 
-    public String getPath()
-    {
-        return configs.userConfig(userId).getPath();
+    public String getPath() {
+        return traceConfig.userConfig(userId).getPath();
     }
 
-    public void setDaysDeleteOffset(int daysDeleteOffset)
-    {
-        configs.userConfig(userId).daysDeleteOffset = daysDeleteOffset;
-        configs.save();
+    public void setDaysDeleteOffset(int daysDeleteOffset) {
+        traceConfig.userConfig(userId).daysDeleteOffset = daysDeleteOffset;
+        traceConfig.save();
     }
 
-    public int getdaysDeleteOffset()
-    {
-        return configs.userConfig(userId).daysDeleteOffset;
+    public int getdaysDeleteOffset() {
+        return traceConfig.userConfig(userId).daysDeleteOffset;
     }
 
-    public List<TraceFile> getTraceFiles()
-    {
+    public List<TraceFile> getTraceFiles() {
         return traceFiles.stream().sorted(Comparator.comparing(TraceFile::getLastModified)).collect(Collectors.toList());
     }
 
-    public String GetAsDelimitedString(String p_Delimiter)
-    {
-        return traceFiles.stream().map(x -> configs.userConfig(userId).getPath() + x).collect(Collectors.joining("\n"));
+    public String GetAsDelimitedString(String p_Delimiter) {
+        return traceFiles.stream().map(x -> traceConfig.userConfig(userId).getPath() + x).collect(Collectors.joining("\n"));
     }
 }

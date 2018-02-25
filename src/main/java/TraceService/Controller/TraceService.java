@@ -1,6 +1,7 @@
 package TraceService.Controller;
 
 import TraceService.Business.TraceUserConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import TraceService.Business.TraceManager;
 
@@ -10,17 +11,11 @@ import java.security.Principal;
 @RestController
 public class TraceService
 {
+    @Autowired
     private TraceManager traceManager;
 
-    public TraceService()
-    {
-        traceManager = new TraceManager();
-    }
-
-    @CrossOrigin(origins = "*")
     @GetMapping("/traceFiles")
-    public TraceManager doTraceFilesRequest(Principal principal)
-    {
+    public TraceManager doTraceFilesRequest(Principal principal) {
         traceManager.userId = principal.getName();
         traceManager.loadFiles();
 
@@ -28,33 +23,27 @@ public class TraceService
     }
 
     //value = "/traceFile/{id}", method = RequestMethod.GET, produces="text/xml"
-    @CrossOrigin(origins = "*")
     @GetMapping("/traceFile/{id}")
-    public String doTraceFileRequest(@PathVariable("id") String p_Id, Principal principal)
-    {
+    public String doTraceFileRequest(@PathVariable("id") String p_Id, Principal principal) {
         traceManager.userId = principal.getName();
+
         return traceManager.getTraceFile(p_Id);
     }
 
     //@PostMapping(path = "/members", consumes = "application/json", produces = "application/json")
     //@CrossOrigin(origins = "*")
     @PostMapping("/newTracePath/")
-    public TraceManager doNewTracePathRequest(@RequestBody String p_Data, HttpServletResponse response, Principal principal)
-    {
+    public TraceManager doNewTracePathRequest(@RequestBody String p_Data, HttpServletResponse response, Principal principal) {
         traceManager.userId = principal.getName();
-
         traceManager.setPath(p_Data);
         traceManager.loadFiles();
 
         return traceManager;
     }
   
-    @CrossOrigin(origins = "*")
     @PostMapping("/deleteTraceFiles/")
-    public TraceManager doNewTracePathRequest(@RequestBody Integer p_Data, HttpServletResponse response, Principal principal)
-    {
+    public TraceManager doNewTracePathRequest(@RequestBody Integer p_Data, HttpServletResponse response, Principal principal) {
         traceManager.userId = principal.getName();
-
         traceManager.setDaysDeleteOffset(p_Data);
         traceManager.deleteTraceFiles(p_Data);
 
