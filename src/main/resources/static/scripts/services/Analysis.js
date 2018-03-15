@@ -182,8 +182,8 @@ l_App.factory('Analysis', function(Selections, Statistics, FilterType)
 						  ChartArgument: p_LineParams.SQLTimestamp
 						};
 
-			if (!p_HasTimestamps)						
-				l_Item.ChartArgument = p_LineParams.Id;
+			if (p_HasTimestamps == false)
+				l_Item.ChartArgument = l_Item.Id;
 
 			p_ResultArr.push(l_Item);
 			
